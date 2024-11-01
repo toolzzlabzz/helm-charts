@@ -2,106 +2,157 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
 
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+worker:
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  replicaCount: 1
+  image:
+    repository: ghcr.io/novuhq/novu/worker:2.0.0
+    pullPolicy: IfNotPresent
+    tag: ""
 
-podAnnotations: {}
-podLabels: {}
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
 
-podSecurityContext: {}
-  # fsGroup: 2000
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Automatically mount a ServiceAccount's API credentials?
+    automount: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  podAnnotations: {}
+  podLabels: {}
 
-service:
-  type: ClusterIP
-  port: 80
+  podSecurityContext: {}
+    # fsGroup: 2000
 
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  service:
+    type: ClusterIP
+    port: 80
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  resources: 
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  env:
+    - name: NODE_ENV
+    - value: ""
+    - name: MONGO_URL
+    - value: ""
+    - name: MONGO_MAX_POOL_SIZE
+    - value: ""
+    - name: REDIS_HOST
+    - value: ""
+    - name: REDIS_PORT
+    - value: ""
+    - name: REDIS_PASSWORD
+    - value: ""
+    - name: REDIS_PASSWORD
+    - value: ""
+    - name: REDIS_DB_INDEX
+    - value: ""
+    - name: REDIS_CACHE_SERVICE_HOST
+    - value: ""
+    - name: REDIS_CACHE_SERVICE_HOST
+    - value: ""
+    - name: REDIS_CACHE_SERVICE_PORT
+    - value: ""
+    - name: S3_LOCAL_STACK
+    - value: ""
+    - name: S3_BUCKET_NAME
+    - value: ""
+    - name: S3_REGION
+    - value: ""
+    - name: AWS_ACCESS_KEY_ID
+    - value: ""
+    - name: AWS_SECRET_ACCESS_KEY
+    - value: ""
+    - name: STORE_ENCRYPTION_KEY
+    - value: ""
+    - name: SENTRY_DSN
+    - value: ""     
+    - name: SENTRY_DSN
+    - value: ""      
+    - name: NEW_RELIC_APP_NAME
+    - value: ""        
+    - name: NEW_RELIC_LICENSE_KEY
+    - value: "" 
+    - name: NEW_RELIC_LICENSE_KEY
+    - value: "" 
+    - name: BROADCAST_QUEUE_CHUNK_SIZE
+    - value: "" 
+    - name: MULTICAST_QUEUE_CHUNK_SIZE
+    - value: "" 
 
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
 
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
+  # Additional volumes on the output Deployment definition.
+  volumes: []
+  # - name: foo
+  #   secret:
+  #     secretName: mysecret
+  #     optional: false
 
-tolerations: []
+  # Additional volumeMounts on the output Deployment definition.
+  volumeMounts: []
+  # - name: foo
+  #   mountPath: "/etc/foo"
+  #   readOnly: true
 
-affinity: {}
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
