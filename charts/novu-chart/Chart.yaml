@@ -1,6 +1,6 @@
 apiVersion: v2
-name: novu-chart
-description: A Helm chart for Kubernetes novu-chart
+name: novu
+description: A Helm chart for Kubernetes novu
 type: application
 icon: "http://tools.png"
 version: 1.0.2
