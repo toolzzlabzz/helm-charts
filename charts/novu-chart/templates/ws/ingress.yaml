@@ -7,11 +7,11 @@
   {{- end }}
 {{- end }}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
-wsVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1
 {{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-wsVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
-wsVersion: extensions/v1beta1
+apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
