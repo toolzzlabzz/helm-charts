@@ -1,0 +1,32 @@
+{{- if .Values.ws.autoscaling.enabled }}
+wsVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "novu-chart.ws.fullname" . }}
+  labels:
+    {{- include "novu-chart.ws.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    wsVersion: apps/v1
+    kind: Deployment
+    name: {{ include "novu-chart.ws.fullname" . }}
+  minReplicas: {{ .Values.ws.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.ws.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.ws.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.ws.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.ws.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.ws.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

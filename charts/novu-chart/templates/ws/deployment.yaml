@@ -1,0 +1,75 @@
+wsVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "novu-chart.ws.fullname" . }}
+  labels:
+    {{- include "novu-chart.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.ws.autoscaling.enabled }}
+  replicas: {{ .Values.ws.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "novu-chart.ws.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.ws.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "novu-chart.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.ws.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "novu-chart.ws.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.ws.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.ws.securityContext | nindent 12 }}
+          image: "{{ .Values.ws.image.repository }}:{{ .Values.ws.image.tag }}"
+          imagePullPolicy: {{ .Values.ws.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.ws.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.ws.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.ws.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.ws.resources | nindent 12 }}
+          {{- with .Values.ws.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+       
+          {{- with .Values.ws.env  }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+      {{- with .Values.ws.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ws.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ws.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ws.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

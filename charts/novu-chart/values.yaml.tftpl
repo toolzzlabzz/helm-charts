@@ -1,16 +1,11 @@
-# Default values for novu-chart.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-
 
 worker:
 
   replicaCount: 1
   image:
-    repository: ghcr.io/novuhq/novu/worker:2.0.0
+    repository: ghcr.io/novuhq/novu/worker
     pullPolicy: IfNotPresent
-    tag: ""
+    tag: "2.0.0"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -72,55 +67,48 @@ worker:
     requests:
       cpu: 100m
       memory: 128Mi
+  
   env:
     - name: NODE_ENV
-    - value: ""
+      value: "dev"
     - name: MONGO_URL
-    - value: ""
+      value: "${MONGO_URL}"
     - name: MONGO_MAX_POOL_SIZE
-    - value: ""
+      value: "${MONGO_MAX_POOL_SIZE}"
     - name: REDIS_HOST
-    - value: ""
+      value: "${REDIS_HOST}"
     - name: REDIS_PORT
-    - value: ""
+      value: "${REDIS_PORT}"
     - name: REDIS_PASSWORD
-    - value: ""
-    - name: REDIS_PASSWORD
-    - value: ""
+      value: "{REDIS_PASSWORD}"
     - name: REDIS_DB_INDEX
-    - value: ""
+      value: "1"
     - name: REDIS_CACHE_SERVICE_HOST
-    - value: ""
-    - name: REDIS_CACHE_SERVICE_HOST
-    - value: ""
+      value: ""
     - name: REDIS_CACHE_SERVICE_PORT
-    - value: ""
+      value: ""
     - name: S3_LOCAL_STACK
-    - value: ""
+      value: ""
     - name: S3_BUCKET_NAME
-    - value: ""
+      value: ""
     - name: S3_REGION
-    - value: ""
+      value: ""
     - name: AWS_ACCESS_KEY_ID
-    - value: ""
+      value: ""
     - name: AWS_SECRET_ACCESS_KEY
-    - value: ""
+      value: ""
     - name: STORE_ENCRYPTION_KEY
-    - value: ""
+      value: ""    
     - name: SENTRY_DSN
-    - value: ""     
-    - name: SENTRY_DSN
-    - value: ""      
+      value: ""      
     - name: NEW_RELIC_APP_NAME
-    - value: ""        
+      value: ""        
     - name: NEW_RELIC_LICENSE_KEY
-    - value: "" 
-    - name: NEW_RELIC_LICENSE_KEY
-    - value: "" 
+      value: "" 
     - name: BROADCAST_QUEUE_CHUNK_SIZE
-    - value: "" 
+      value: "100" 
     - name: MULTICAST_QUEUE_CHUNK_SIZE
-    - value: "" 
+      value: "100" 
 
   livenessProbe:
     httpGet:
@@ -156,3 +144,16 @@ worker:
   tolerations: []
 
   affinity: {}
+
+
+
+# Optional [TODO]: fix values
+
+
+# community-operator:
+#  operator:
+#    enabled: true
+
+# redis:
+#    enabled: true
+  
