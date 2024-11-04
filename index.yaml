@@ -3,6 +3,6 @@ entries:
   novu-chart:
     - apiVersion: v2
       name: novu-chart
-      version: 1.0.1
+      version: 1.0.2
       urls:
-        - https://github.com/toolzzlabzz/charts/raw/refs/heads/main/novu-chart-1.0.1.tgz
+        - https://github.com/toolzzlabzz/charts/raw/refs/heads/main/novu-chart-1.0.2.tgz
