@@ -3,5 +3,5 @@ name: novu-chart
 description: A Helm chart for Kubernetes novu-chart
 type: application
 icon: "http://tools.png"
-version: 1.0.0
-appVersion: "1.0.0"
+version: 1.0.1
+appVersion: "1.0.1"
