@@ -1,3 +1,4 @@
+{{- if .Values.web.enabled }}
 {{- if .Values.web.ingress.enabled -}}
 {{- $fullName := include "novu-chart.web.fullname" . -}}
 {{- $svcPort := .Values.web.service.port -}}
@@ -58,4 +59,5 @@ spec:
               {{- end }}
           {{- end }}
     {{- end }}
+{{- end }}
 {{- end }}

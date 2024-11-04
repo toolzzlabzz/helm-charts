@@ -1,3 +1,5 @@
+{{- if .Values.worker.enabled }}
+
 {{- if .Values.worker.ingress.enabled -}}
 {{- $fullName := include "novu-chart.worker.fullname" . -}}
 {{- $svcPort := .Values.worker.service.port -}}
@@ -58,4 +60,5 @@ spec:
               {{- end }}
           {{- end }}
     {{- end }}
+{{- end }}
 {{- end }}
