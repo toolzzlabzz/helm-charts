@@ -81,11 +81,11 @@ web:
       value: ""
 
 
-  livenessProbe: {}
+  livenessProbe: ~
     # httpGet:
     #   path: /
     #   port: http
-  readinessProbe: {}
+  readinessProbe: ~
     # httpGet:
     #   path: /
     #   port: http
