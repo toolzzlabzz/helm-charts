@@ -81,14 +81,14 @@ web:
       value: ""
 
 
-  livenessProbe:
-    httpGet:
-      path: /
-      port: http
-  readinessProbe:
-    httpGet:
-      path: /
-      port: http
+  livenessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
+  readinessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
 
   autoscaling:
     enabled: false
