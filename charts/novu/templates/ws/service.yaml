@@ -9,7 +9,7 @@ spec:
   type: {{ .Values.ws.service.type }}
   ports:
     - port: {{ .Values.ws.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.ws.service.targetPort }}
       protocol: TCP
       name: http
   selector:
