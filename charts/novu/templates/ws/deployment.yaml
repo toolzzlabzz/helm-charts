@@ -42,18 +42,20 @@ spec:
             - name: http
               containerPort: {{ .Values.ws.service.port }}
               protocol: TCP
+          {{- if .Values.web.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.ws.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.worker.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .Values.web.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.ws.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.worker.readinessProbe | nindent 12 }}
+          {{- end }}          
           resources:
             {{- toYaml .Values.ws.resources | nindent 12 }}
           {{- with .Values.ws.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-
-       
           {{- with .Values.ws.env  }}
           env:
             {{- toYaml . | nindent 12 }}

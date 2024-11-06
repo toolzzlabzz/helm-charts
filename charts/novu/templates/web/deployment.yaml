@@ -50,20 +50,16 @@ spec:
           readinessProbe:
             {{- toYaml .Values.web.readinessProbe | nindent 12 }}
           {{- end }}  
-          
           resources:
             {{- toYaml .Values.web.resources | nindent 12 }}
           {{- with .Values.web.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-
-       
           {{- with .Values.web.env  }}
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-
       {{- with .Values.web.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
