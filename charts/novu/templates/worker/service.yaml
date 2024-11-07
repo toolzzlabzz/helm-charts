@@ -5,7 +5,7 @@ kind: Service
 metadata:
   name: {{ include "novu.worker.fullname" . }}
   labels:
-    {{- include "novu.labels" . | nindent 4 }}
+    {{- include "novu.worker.selectorLabels" . | nindent 4 }}
 spec:
   type: {{ .Values.worker.service.type }}
   ports:
@@ -14,5 +14,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-     {{- include "novu.selectorLabels" . | nindent 4 }}
+     {{- include "novu.worker.selectorLabels" . | nindent 4 }}
 {{- end }}     

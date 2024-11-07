@@ -1,10 +1,11 @@
 {{- if .Values.web.enabled }}
+
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "novu.web.fullname" . }}
   labels:
-    {{- include "novu.labels" . | nindent 4 }}
+    {{- include "novu.web.selectorLabels" . | nindent 4 }}
 spec:
   type: {{ .Values.web.service.type }}
   ports:
@@ -13,5 +14,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-     {{- include "novu.selectorLabels" . | nindent 4 }}
+     {{- include "novu.web.selectorLabels" . | nindent 4 }}
 {{- end }}

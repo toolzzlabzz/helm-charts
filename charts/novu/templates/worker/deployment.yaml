@@ -5,7 +5,7 @@ kind: Deployment
 metadata:
   name: {{ include "novu.worker.fullname" . }}
   labels:
-    {{- include "novu.worker.labels" . | nindent 4 }}
+    {{- include "novu.worker.selectorLabels" . | nindent 4 }}
 spec:
   {{- if not .Values.worker.autoscaling.enabled }}
   replicas: {{ .Values.worker.replicaCount }}
@@ -20,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "novu.labels" . | nindent 8 }}
+        {{- include "novu.worker.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -42,24 +42,28 @@ spec:
             - name: http
               containerPort: {{ .Values.worker.service.port }}
               protocol: TCP
-          {{- if .Values.web.livenessProbe }}
+          {{- if .Values.worker.livenessProbe }}    
           livenessProbe:
             {{- toYaml .Values.worker.livenessProbe | nindent 12 }}
-          {{- end }}
-          {{- if .Values.web.readinessProbe }}
+          {{- end }}  
+          {{- if .Values.worker.readinessProbe }}
           readinessProbe:
             {{- toYaml .Values.worker.readinessProbe | nindent 12 }}
-          {{- end }}
+          {{- end }}  
+          
           resources:
             {{- toYaml .Values.worker.resources | nindent 12 }}
           {{- with .Values.worker.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+
+       
           {{- with .Values.worker.env  }}
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+
       {{- with .Values.worker.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

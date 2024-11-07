@@ -5,7 +5,7 @@ kind: Deployment
 metadata:
   name: {{ include "novu.web.fullname" . }}
   labels:
-    {{- include "novu.labels" . | nindent 4 }}
+    {{- include "novu.web.selectorLabels" . | nindent 4 }}
 spec:
   {{- if not .Values.web.autoscaling.enabled }}
   replicas: {{ .Values.web.replicaCount }}
@@ -20,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "novu.labels" . | nindent 8 }}
+        {{- include "novu.web.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -50,16 +50,20 @@ spec:
           readinessProbe:
             {{- toYaml .Values.web.readinessProbe | nindent 12 }}
           {{- end }}  
+          
           resources:
             {{- toYaml .Values.web.resources | nindent 12 }}
           {{- with .Values.web.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+
+       
           {{- with .Values.web.env  }}
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+
       {{- with .Values.web.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

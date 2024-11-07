@@ -6,7 +6,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "novu.web.fullname" . }}
   labels:
-    {{- include "novu.web.labels" . | nindent 4 }}
+    {{- include "novu.web.selectorLabels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
