@@ -1,7 +1,7 @@
 {{- if .Values.worker.enabled }}
 
 {{- if .Values.worker.ingress.enabled -}}
-{{- $fullName := include "novu-chart.worker.fullname" . -}}
+{{- $fullName := include "novu.worker.fullname" . -}}
 {{- $svcPort := .Values.worker.service.port -}}
 {{- if and .Values.worker.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.worker.ingress.annotations "kubernetes.io/ingress.class") }}
@@ -19,7 +19,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "novu-chart.labels" . | nindent 4 }}
+    {{- include "novu.labels" . | nindent 4 }}
   {{- with .Values.worker.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

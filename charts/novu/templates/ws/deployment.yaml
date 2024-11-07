@@ -3,16 +3,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "novu-chart.ws.fullname" . }}
+  name: {{ include "novu.ws.fullname" . }}
   labels:
-    {{- include "novu-chart.labels" . | nindent 4 }}
+    {{- include "novu.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.ws.autoscaling.enabled }}
   replicas: {{ .Values.ws.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "novu-chart.ws.selectorLabels" . | nindent 6 }}
+      {{- include "novu.ws.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.ws.podAnnotations }}
@@ -20,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "novu-chart.labels" . | nindent 8 }}
+        {{- include "novu.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -29,7 +29,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "novu-chart.ws.serviceAccountName" . }}
+      serviceAccountName: {{ include "novu.ws.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.ws.podSecurityContext | nindent 8 }}
       containers:

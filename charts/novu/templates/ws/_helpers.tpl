@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "novu-chart.ws.name" -}}
+{{- define "novu.ws.name" -}}
 {{- default (print .Chart.Name "-ws") .Values.ws.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "novu-chart.ws.fullname" -}}
+{{- define "novu.ws.fullname" -}}
 {{- if .Values.ws.fullnameOverride }}
 {{- .Values.ws.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,8 +26,8 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Selector labels
 */}}
-{{- define "novu-chart.ws.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "novu-chart.ws.name" . }}
+{{- define "novu.ws.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "novu.ws.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
@@ -35,9 +35,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 
-{{- define "novu-chart.ws.serviceAccountName" -}}
+{{- define "novu.ws.serviceAccountName" -}}
 {{- if .Values.ws.serviceAccount.create }}
-{{- default (include "novu-chart.ws.fullname" .) .Values.ws.serviceAccount.name }}
+{{- default (include "novu.ws.fullname" .) .Values.ws.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.ws.serviceAccount.name }}
 {{- end }}

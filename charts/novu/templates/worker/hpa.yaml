@@ -5,14 +5,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "novu-chart.worker.fullname" . }}
+  name: {{ include "novu.worker.fullname" . }}
   labels:
-    {{- include "novu-chart.worker.labels" . | nindent 4 }}
+    {{- include "novu.worker.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "novu-chart.worker.fullname" . }}
+    name: {{ include "novu.worker.fullname" . }}
   minReplicas: {{ .Values.worker.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.worker.autoscaling.maxReplicas }}
   metrics:

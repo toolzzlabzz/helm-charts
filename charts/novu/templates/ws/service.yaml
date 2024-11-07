@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "novu-chart.ws.fullname" . }}
+  name: {{ include "novu.ws.fullname" . }}
   labels:
-    {{- include "novu-chart.labels" . | nindent 4 }}
+    {{- include "novu.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.ws.service.type }}
   ports:
@@ -13,5 +13,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-     {{- include "novu-chart.selectorLabels" . | nindent 4 }}
+     {{- include "novu.selectorLabels" . | nindent 4 }}
 {{- end }}
