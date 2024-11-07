@@ -27,7 +27,7 @@ If release name contains chart name it will be used as a full name.
 Selector labels
 */}}
 {{- define "novu-chart.web.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "novu-chart.name" . }}
+app.kubernetes.io/name: {{ include "novu-chart.web.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
