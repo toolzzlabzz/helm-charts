@@ -37,17 +37,8 @@ spec:
           securityContext:
             {{- toYaml .Values.web.securityContext | nindent 12 }}
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
-
-          {{- with .Values.web.command  }}
-          command:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-
-          {{- with .Values.web.args  }}
-          args:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-
+          command: ["/bin/sh",  "-c"]
+          args: ["pnpm run envsetup:docker & pnpm run start:static:build"]
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
           ports:
             - name: http
