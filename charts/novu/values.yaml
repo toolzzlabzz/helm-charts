@@ -5,6 +5,12 @@ web:
     repository: ghcr.io/novuhq/novu/web
     pullPolicy: IfNotPresent
     tag: "2.0.0"
+  command: 
+    - "/bin/sh"
+    - "-c"
+  args: 
+    - "pnpm run envsetup:docker" 
+    - "pnpm run start:static:build"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -117,7 +123,7 @@ web:
   affinity: {}
 
 api:
-  enabled: true
+  enabled: false
   replicaCount: 1
   image:
     repository: ghcr.io/novuhq/novu/api
@@ -274,7 +280,7 @@ api:
   affinity: {}
 
 ws:
-  enabled: true
+  enabled: false
   replicaCount: 1
   image:
     repository: ghcr.io/novuhq/novu/ws
@@ -407,7 +413,7 @@ ws:
   affinity: {}
 
 worker:
-  enabled: true
+  enabled: false
   replicaCount: 1
   image:
     repository: ghcr.io/novuhq/novu/worker

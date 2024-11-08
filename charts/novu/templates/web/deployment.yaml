@@ -37,8 +37,17 @@ spec:
           securityContext:
             {{- toYaml .Values.web.securityContext | nindent 12 }}
           image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
-          command: {{ .Values.web.command }}
-          args: {{ .Values.web.args }}
+
+          {{- with .Values.web.command  }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+          {{- with .Values.web.args  }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
           ports:
             - name: http
