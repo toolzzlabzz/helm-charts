@@ -1,0 +1,18 @@
+{{- if .Values.webhook.enabled }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "novu.webhook.fullname" . }}
+  labels:
+    {{- include "novu.webhook.selectorLabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.webhook.service.type }}
+  ports:
+    - port: {{ .Values.webhook.service.port }}
+      targetPort: {{ .Values.webhook.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+     {{- include "novu.webhook.selectorLabels" . | nindent 4 }}
+{{- end }}     

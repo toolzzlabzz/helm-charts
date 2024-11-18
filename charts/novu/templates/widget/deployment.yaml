@@ -1,0 +1,83 @@
+{{- if .Values.widget.enabled }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "novu.widget.fullname" . }}
+  labels:
+    {{- include "novu.widget.selectorLabels" . | nindent 4 }}
+spec:
+  {{- if not .Values.widget.autoscaling.enabled }}
+  replicas: {{ .Values.widget.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "novu.widget.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.widget.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "novu.widget.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.widget.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "novu.widget.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.widget.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.widget.securityContext | nindent 12 }}
+          image: "{{ .Values.widget.image.repository }}:{{ .Values.widget.image.tag }}"
+          imagePullPolicy: {{ .Values.widget.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.widget.service.port }}
+              protocol: TCP
+          {{- if .Values.widget.livenessProbe }}    
+          livenessProbe:
+            {{- toYaml .Values.widget.livenessProbe | nindent 12 }}
+          {{- end }}  
+          {{- if .Values.widget.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.widget.readinessProbe | nindent 12 }}
+          {{- end }}  
+          
+          resources:
+            {{- toYaml .Values.widget.resources | nindent 12 }}
+          {{- with .Values.widget.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+       
+          {{- with .Values.widget.env  }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+      {{- with .Values.widget.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.widget.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.widget.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.widget.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

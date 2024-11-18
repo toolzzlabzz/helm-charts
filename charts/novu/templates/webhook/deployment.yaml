@@ -1,0 +1,83 @@
+{{- if .Values.webhook.enabled }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "novu.webhook.fullname" . }}
+  labels:
+    {{- include "novu.webhook.selectorLabels" . | nindent 4 }}
+spec:
+  {{- if not .Values.webhook.autoscaling.enabled }}
+  replicas: {{ .Values.webhook.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "novu.webhook.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.webhook.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "novu.webhook.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.webhook.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "novu.webhook.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.webhook.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.webhook.securityContext | nindent 12 }}
+          image: "{{ .Values.webhook.image.repository }}:{{ .Values.webhook.image.tag }}"
+          imagePullPolicy: {{ .Values.webhook.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.webhook.service.port }}
+              protocol: TCP
+          {{- if .Values.webhook.livenessProbe }}    
+          livenessProbe:
+            {{- toYaml .Values.webhook.livenessProbe | nindent 12 }}
+          {{- end }}  
+          {{- if .Values.webhook.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.webhook.readinessProbe | nindent 12 }}
+          {{- end }}  
+          
+          resources:
+            {{- toYaml .Values.webhook.resources | nindent 12 }}
+          {{- with .Values.webhook.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+       
+          {{- with .Values.webhook.env  }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+      {{- with .Values.webhook.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.webhook.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.webhook.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.webhook.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

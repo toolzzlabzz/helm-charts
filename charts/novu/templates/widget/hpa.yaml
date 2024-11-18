@@ -1,0 +1,36 @@
+
+{{- if .Values.widget.enabled }}
+
+{{- if .Values.widget.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "novu.widget.fullname" . }}
+  labels:
+    {{- include "novu.widget.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "novu.widget.fullname" . }}
+  minReplicas: {{ .Values.widget.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.widget.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.widget.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.widget.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.widget.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.widget.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
+{{- end }}
