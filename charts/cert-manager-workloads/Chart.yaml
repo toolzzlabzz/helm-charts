@@ -1,0 +1,11 @@
+apiVersion: v2
+name: cert-manager-workloads
+description: A Helm chart for Kubernetes cert-manager-workloads
+type: application
+icon: "http://tools.png"
+version: "1.0.0"
+appVersion: "1.0.0"
+dependencies: []
+
+
+    
